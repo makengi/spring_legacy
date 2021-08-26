@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+
+<context:component-scan base-package="com.springlegacy"/>
+        <bean class="com.springlegacy.model.speaker.SonySpeaker"/>
+<!--        <bean id="userService" class="com.springlegacy.model.user.UserServiceImpl">-->
+<!--                <property name="userDAO" ref="userDAO" />-->
+<!--        </bean>-->
+<!--        <bean id="userDAO" class="com.springlegacy.model.user.repository.UserDAO"/>-->
+
+<!--        <bean id="log" class="com.springlegacy.common.LogAdvice"/>-->
+<!--        <bean id="afterReturning" class="com.springlegacy.common.AfterReturnAdvice"/>-->
+<!--        <bean id="afterThrowing" class="com.springlegacy.common.AfterThrowAdvice"/>-->
+<!--        <bean id="around" class="com.springlegacy.common.AroundAdvice"/>-->
+        <aop:config>
+<!--                <aop:pointcut id="allPointcut" expression=" execution(* com.springlegacy.model..*Impl.*(..))"/>-->
+<!--                <aop:pointcut id="afterPointcut" expression="execution(* com.springlegacy.model.user.UserServiceImpl.getUser(..))"/>-->
+<!--                <aop:aspect ref="log">-->
+<!--                        <aop:before pointcut-ref="allPointcut" method="printLog"/>-->
+<!--                </aop:aspect>-->
+<!--                <aop:aspect ref="afterReturning">-->
+<!--                        <aop:after-returning method="afterLog" pointcut-ref="allPointcut" returning="returnObj"/>-->
+<!--                </aop:aspect>-->
+<!--                <aop:aspect ref="afterThrowing">-->
+<!--                        <aop:after-throwing method="exceptionLog" throwing="exceptObject" pointcut-ref="allPointcut"/>-->
+<!--                </aop:aspect>-->
+<!--                <aop:aspect ref="around">-->
+<!--                        <aop:around method="aroungLog" pointcut-ref="allPointcut"/>-->
+<!--                </aop:aspect>-->
+        </aop:config>
+        <!--DB Resource -->
+        <context:property-placeholder location="classpath:config/database.properties"/>
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+                <property name="driverClassName" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+        </bean>
+
+        <!--  Transaction 설정  -->
+        <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+                <property name="dataSource" ref="dataSource"></property>
+        </bean>
+
+        <tx:advice id="txAdvice" transaction-manager="txManager">
+                <tx:attributes>
+                        <tx:method name="get*" read-only="true"/>
+                        <tx:method name="*"/>
+                </tx:attributes>
+        </tx:advice>
+
+        <aop:config>
+                <aop:pointcut id="txPointcut" expression="execution(* com.springlegacy.model..*(..))"/>
+                <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
+        </aop:config>
+</beans>
+
