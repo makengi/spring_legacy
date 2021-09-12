@@ -14,20 +14,20 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 <!--    RestApi Dispatcher Servlet-->
-<!--    <servlet>-->
-<!--        <servlet-name>restapi</servlet-name>-->
-<!--        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>-->
-<!--        <init-param>-->
-<!--            <param-name>contextConfigLocation</param-name>-->
-<!--            <param-value>/WEB-INF/restapi-servlet.xml</param-value>-->
-<!--        </init-param>-->
-<!--        <load-on-startup>1</load-on-startup>-->
+    <servlet>
+        <servlet-name>restapi</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/restapi-servlet.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
 
-<!--    </servlet>-->
-<!--    <servlet-mapping>-->
-<!--        <servlet-name>restapi</servlet-name>-->
-<!--        <url-pattern>/</url-pattern>-->
-<!--    </servlet-mapping>-->
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>restapi</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
 
     <!-- Web Dispatcher Servlet    -->
     <servlet>
